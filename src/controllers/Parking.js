@@ -3,15 +3,22 @@ const db = require("../config/db");
 class Parking {
   //get all parking.
   async getParkings(datas) {
-    if(datas === '' && datas === null){
+    
+    if(Object.keys(datas).length === 0){
+        console.log(datas.length)
         let results = await db.query(`SELECT * FROM parking`).catch(console.log);
         return results.rows;
     }else{
+        let query = "SELECT * FROM parking where";
+        let queryFilter=""
         if(datas.type_transport != "all"){
-            let results = await db.query(`SELECT * FROM parking where type_transport = $1`,[datas.type_transport]).catch(console.log);
-            return results.rows;
+            queryFilter = " type_transport='"+datas.type_transport+"'";
+        }else{
+            queryFilter = " type_transport !='' ";
         }
-        let results = await db.query(`SELECT * FROM parking`).catch(console.log);
+        query = query+queryFilter
+        console.log(query)
+        let results = await db.query(query).catch(console.log);
         return results.rows;
     }
   }
