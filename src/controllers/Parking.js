@@ -43,7 +43,6 @@ class Parking {
             }
         }
         query = query+queryFilter
-        console.log(query)
         let results = await db.query(query).catch(console.log);
         return results.rows;
     }
